@@ -4,7 +4,7 @@ package fr.univ_amu.iut.exercice2;
  * Exercice 2 - FizzBuzz.
  *
  * <p>Classique des entretiens d'embauche et exercice parfait pour pratiquer la <b>triangulation</b>
- * : commencez par un retour en dur, puis généralisez dès qu'un deuxième test vous y force.
+ * : commencez par un retour en dur, puis généralisez dès qu'un deuxième test } * vous y force.
  *
  * <p>Règles : pour chaque entier {@code n},
  *
@@ -28,6 +28,15 @@ public class FizzBuzzer {
     // return par défaut. Activez les tests dans l'ordre : 1 et 2 passent
     // directement (fake it via le return final), 3 demande d'introduire
     // un premier cas, etc.
+    if (n % 3 == 0 && n % 5 == 0) {
+      return "FizzBuzz";
+    }
+    if (n % 3 == 0) {
+      return "Fizz";
+    }
+    if (n % 5 == 0) {
+      return "Buzz";
+    }
     return String.valueOf(n);
   }
 
@@ -41,6 +50,9 @@ public class FizzBuzzer {
     String[] sequence = new String[n];
     // TODO exercice 2 : remplir sequence[i] en réutilisant fizzBuzz(i+1).
     // Ne dupliquez pas la logique : appelez fizzBuzz !
+    for (int i = 0; i < n; i++) {
+      sequence[i] = fizzBuzz(i + 1);
+    }
     return sequence;
   }
 }
