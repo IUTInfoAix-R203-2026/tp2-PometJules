@@ -18,11 +18,6 @@ package fr.univ_amu.iut.exercice3;
  *       </ul>
  *       Toute autre soustraction doit lever {@link IllegalArgumentException}.
  * </ul>
- *
- * <p>Conseils TDD : commencez par gérer uniquement {@code I}, puis {@code II} / {@code III} (fake
- * it), puis {@code V} (triangulation), puis {@code VI} (addition de deux symboles différents), puis
- * {@code IV} (introduction de la soustraction). À ce moment-là, <b>extrayez une méthode</b> pour
- * calculer la valeur d'un symbole - vous en aurez besoin pour les symboles suivants.
  */
 public class ConvertisseurDeNombreRomain {
 
@@ -47,6 +42,57 @@ public class ConvertisseurDeNombreRomain {
     //
     // Pour les exceptions : une soustraction est valide seulement pour
     // I avant V/X, X avant L/C, C avant D/M. Tout le reste est invalide.
+    String upper = chiffreRomain.toUpperCase();
+
+    for (int i = 0; i < upper.length(); i++) {
+      int valeurCourante = valeurDe(upper.charAt(i));
+
+      if (i + 1 < upper.length()) {
+        int valeurSuivante = valeurDe(upper.charAt(i + 1));
+
+        if (valeurCourante < valeurSuivante) {
+          verifierSoustractionValide(upper.charAt(i), upper.charAt(i + 1));
+          total += valeurSuivante - valeurCourante;
+          i++; // on saute le caractère suivant, déjà traité
+        } else {
+          total += valeurCourante;
+        }
+      } else {
+        total += valeurCourante;
+      }
+    }
     return total;
+  }
+
+  private int valeurDe(char symbole) {
+    switch (symbole) {
+      case 'I':
+        return 1;
+      case 'V':
+        return 5;
+      case 'X':
+        return 10;
+      case 'L':
+        return 50;
+      case 'C':
+        return 100;
+      case 'D':
+        return 500;
+      case 'M':
+        return 1000;
+      default:
+        throw new IllegalArgumentException("Symbole romain invalide : " + symbole);
+    }
+  }
+
+  private void verifierSoustractionValide(char gauche, char droite) {
+    boolean valide =
+        (gauche == 'I' && (droite == 'V' || droite == 'X'))
+            || (gauche == 'X' && (droite == 'L' || droite == 'C'))
+            || (gauche == 'C' && (droite == 'D' || droite == 'M'));
+
+    if (!valide) {
+      throw new IllegalArgumentException("Soustraction invalide : " + gauche + " avant " + droite);
+    }
   }
 }
